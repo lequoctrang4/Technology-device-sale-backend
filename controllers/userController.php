@@ -20,24 +20,26 @@ if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
 }
 $path = explode('/', parse_url($_SERVER["REQUEST_URI"])["path"]);
 
-require_once("../models/productModel.php");
+require_once("../models/userModel.php");
+
 $method = $_SERVER["REQUEST_METHOD"];
 try{
         switch ($method){
             case "GET":
+                
+                break;
+            case "POST": 
                 switch($path[3]){
-                    case "products":
-                       
+                    case "login":
+                       echo "login";
                         break;
-                    case "product":
+                    case "logout":
                         
                         break;
                     case "searchItem":
                         
                         break;
                 } 
-                break;
-            case "POST": 
                 break;
             case "PATCH":
                 break;

@@ -39,6 +39,7 @@ create table if not exists `user` (
     `lastLogin` date not null,
     `passwordChangedAt` date not null,
     `isAdmin` tinyint(1) not null default 0,
+    `avatar` varchar(100) not null,
     primary key(`id`)
 );
 
@@ -202,6 +203,7 @@ INSERT INTO `attributes` (`id`, `name`, `group_name`) VALUES ('34', 'Các loại
 INSERT INTO `attributes` (`id`, `name`, `group_name`) VALUES ('35', 'Tính năng đặc biệt', 'Tiện ích khác');
 INSERT INTO `attributes` (`id`, `name`, `group_name`) VALUES ('36', 'Chất liệu mặt kính', 'Thiết kế & Trọng lượng');
 
+INSERT INTO `user` (`id`, `firstName`, `middleName`, `lastName`, `mobile`, `email`, `hashedPassword`, `registeredAt`, `lastLogin`, `passwordChangedAt`, `isAdmin`) VALUES (NULL, 'Lê', 'Quốc', 'Trạng', '0399609015', 'lequoctrang4@gmail.com', 'Lequoctrang4', '2023-03-25', '2023-03-25', '2023-03-25', '0')
 
 
 

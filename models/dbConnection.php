@@ -11,7 +11,6 @@
             }
             catch(Exception $e){
                 throw $e;
-                return;
             }
           }
           return self::$instance;

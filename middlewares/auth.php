@@ -11,7 +11,7 @@
         if (!$user){
             throw new Exception("Cannot decode token!", 400);
         }
-        if (!UserModel::checkUserExistence($user->email)){
+        if (!UserModel::checkUserExistence($user->mobile)){
             throw new Exception("Cannot find user!", 404);
         }
         return (array) $user;
@@ -23,7 +23,7 @@
         if (!$user){
             throw new Exception("Cannot decode token!", 400);
         }
-        if (!UserModel::checkUserExistence($user->email)){
+        if (!UserModel::checkUserExistence($user->mobile)){
             throw new Exception("Cannot find user!", 404);
         }
         if (!$user->isAdmin){

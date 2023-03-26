@@ -15,6 +15,7 @@ function setupRoute() {
   $router->get('/product/$id', 'product/getProductById');
   $router->post('/product', 'product/createProduct');
   $router->patch('/product', 'product/updateProduct');
+  $router->delete('/product/$id', 'product/deleteProduct');
   // // Dynamic GET. Example with 2 variables with static
   // // In the URL -> http://localhost/product/shoes/color/blue
   // // The $type will be available in product.php

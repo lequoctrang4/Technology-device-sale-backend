@@ -19,7 +19,7 @@
         function createProduct($params) {
             $qr = "insert into product (name, color, salePercent, price, manufacturer) values (\"$params->name\", \"$params->color\", \"$params->salePercent\", \"$params->price\", \"$params->manufacturer\");";
             $res = $this->con->query($qr);
-            if ($res == false) {
+            if (!$res) {
                 echo "404";
             } else {
                 echo "success";
@@ -57,6 +57,15 @@
                 }
             } else {
                 echo "not found";
+            }
+        }
+        function deleteProduct($id) {
+            $qr = "delete from `product` where id = $id";
+            $res = $this->con->query($qr);
+            if ($res) {
+                echo "Success";
+            } else {
+                echo "404";
             }
         }
     }

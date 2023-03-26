@@ -50,5 +50,10 @@ class Product extends Controller
         $con = $this->model("ProductModel");
         $con->updateProduct($data);
     }
+
+    function deleteProduct($id) {
+        $con = $this->model("ProductModel");
+        $con->deleteProduct($id[0]);
+    }
 }
 ?>

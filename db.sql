@@ -1,3 +1,4 @@
+drop database `main_app`;
 create database if not exists `main_app`;
 use `main_app`;
 
@@ -133,6 +134,7 @@ create table if not exists `cart_product` (
 create table if not exists `attributes` (
     `id` int NOT NULL AUTO_INCREMENT,
     `name` varchar(50) NOT NULL,
+    `group_name` varchar(50) not null,
     primary key(`id`)
 );
 
@@ -165,7 +167,7 @@ INSERT INTO `product` (`id`, `name`, `color`, `salePercent`, `price`, `manufactu
 INSERT INTO `product` (`id`, `name`, `color`, `salePercent`, `price`, `manufacturer`) VALUES ('11', 'iPhone 13 256GB', 'Red', '0.2', '27990000', 'Apple');
 INSERT INTO `product` (`id`, `name`, `color`, `salePercent`, `price`, `manufacturer`) VALUES ('12', 'iPhone 13 256GB', 'Blue', '0.2', '27990000', 'Apple');
 
---Atribute
+/* --Atribute */
 INSERT INTO `attributes` (`id`, `name`, `group_name`) VALUES ('1', 'Dung lượng Ram', 'Ram & lưu trữ');
 INSERT INTO `attributes` (`id`, `name`, `group_name`) VALUES ('2', 'Bộ nhớ trong', 'Ram & lưu trữ');
 INSERT INTO `attributes` (`id`, `name`, `group_name`) VALUES ('3', 'Kích thước màn hình', 'Màn hình');

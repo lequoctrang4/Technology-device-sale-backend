@@ -4,7 +4,8 @@
     header("Access-Control-Allow-Origin: *");
     header("Access-Control-Allow-Headers: *");
     header("Access-Control-Allow-Methods: *");
+    session_start();
     
-    
-    echo "Stream Midnights By Taylor Swift";
+    require_once  './core/App.php';
+    $myApp = new App();
 ?>

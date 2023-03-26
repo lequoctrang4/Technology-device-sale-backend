@@ -26,16 +26,14 @@ use Firebase\JWT\JWT;
 
 $method = $_SERVER["REQUEST_METHOD"];
 try{
-    if (!isset($path[3])){
-                   throw new Exception("Cannot find route!",400);
-                }
+    if (!isset($path[3])) throw new Exception("Cannot find route!",400);
+
     switch ($method){
         case "GET":
             if (!isset(apache_request_headers()["Authorization"]) || !preg_match('/Bearer\s(\S+)/', apache_request_headers()["Authorization"], $matches)) {
                 throw new Exception("Cannot find token!",400);
             }
             $user = authenticate($matches[1]);
-            
             switch ($path[3]) {
                 case 'profile':
                     echo json_encode(UserModel::getUserProfile($user["mobile"]));
@@ -44,7 +42,7 @@ try{
             break;
         case "POST":
             switch($path[3]){
-                case "login":
+                case "signin":
                     $mobile = $_POST["mobile"];
                     $password = $_POST["password"];
                     if (!UserModel::checkUserExistence($mobile)){
@@ -77,9 +75,44 @@ try{
                     $hashPassword =  password_hash($_POST["password"],PASSWORD_DEFAULT);
                     echo json_encode(UserModel::createNewUser($fname, $mname, $lname, $mobile, $email, $hashPassword, 0));
                     break;
+                case "setavatar":
+                    parse_str(file_get_contents('php://input'),$data);
+                    if (!isset(apache_request_headers()["Authorization"]) || ! preg_match('/Bearer\s(\S+)/', apache_request_headers()["Authorization"], $matches)) {
+                        throw new Exception("Cannot find token!",400);
+                    }
+                    $user = authenticate($matches[1]);
+                    $avatar = $_FILES["avatar"]["name"];
+                    $extension = pathinfo($avatar)["extension"];
+                    if (mb_strtolower($extension) != "png" && mb_strtolower($extension) != "jpg" && mb_strtolower($extension) != "jpeg"){
+                        throw new Exception("We only allow png or jpg files!", 400);
+                    }
+                    $tempname = $_FILES["avatar"]["tmp_name"];
+                    $avatar = $user["mobile"].".".$extension;
+                    $folder = "../images/user/" . $avatar ;
+                    if (!move_uploaded_file($tempname, $folder)) {
+                        throw new Exception("Fail to change avatar!", 500);
+                    }
+                    UserModel::updateAvatarName($avatar, $user["mobile"]);
+                    echo json_encode(["message" => "Uploaded image sucessfully!"]);
+                    break;
             } 
             break;
         case "PATCH":
+            parse_str(file_get_contents('php://input'), $body);
+            if (!isset(apache_request_headers()["Authorization"]) || ! preg_match('/Bearer\s(\S+)/', apache_request_headers()["Authorization"], $matches)) {
+                throw new Exception("Cannot find token!",400);
+            }
+            $user = authenticate($matches[1]);
+            switch ($path[3]) {
+                case 'editprofile':
+                    print_r($body);
+                    // if (!isset($data["phoneNumber"]) || !isset($data["fullName"]) || !isset($data["sex"]))
+                    //     throw new Exception("Lack information", 400);                           
+                    break;
+                case 'changepassword':
+                    
+                    break;
+            }
             break;
         case "DELETE":
             break;

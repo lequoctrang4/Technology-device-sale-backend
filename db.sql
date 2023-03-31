@@ -133,6 +133,7 @@ create table if not exists `cart_product` (
 create table if not exists `attributes` (
     `id` int NOT NULL AUTO_INCREMENT,
     `name` varchar(50) NOT NULL,
+    `group` varchar(50) NOT NULL,
     primary key(`id`)
 );
 
@@ -146,10 +147,10 @@ create table if not exists `attribute_value` (
     foreign key (`id_attribute`) references `attributes`(`id`) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
-INSERT INTO `category` (`id`, `title`, `content`) VALUES ('1', 'Điện thoại', NULL);
-INSERT INTO `category` (`id`, `title`, `content`) VALUES ('2', 'Laptop', NULL);
-INSERT INTO `category` (`id`, `title`, `content`) VALUES ('3', 'Máy tính bảng', NULL);
-INSERT INTO `category` (`id`, `title`, `content`) VALUES ('4', 'Đồng hồ', NULL);
+INSERT INTO `category` (`id`, `title`) VALUES ('1', 'Điện thoại');
+INSERT INTO `category` (`id`, `title`) VALUES ('2', 'Laptop');
+INSERT INTO `category` (`id`, `title`) VALUES ('3', 'Máy tính bảng');
+INSERT INTO `category` (`id`, `title`) VALUES ('4', 'Đồng hồ');
 
 INSERT INTO `product` (`id`, `name`, `color`, `salePercent`, `price`, `manufacturer`) VALUES ('1', 'iPhone 13 128GB', 'Pink', '0.2', '24990000', 'Apple');
 INSERT INTO `product` (`id`, `name`, `color`, `salePercent`, `price`, `manufacturer`) VALUES ('2', 'iPhone 13 128GB', 'Black', '0.2', '24990000', 'Apple');
@@ -202,8 +203,6 @@ INSERT INTO `attributes` (`id`, `name`, `group_name`) VALUES ('33', 'Cảm biế
 INSERT INTO `attributes` (`id`, `name`, `group_name`) VALUES ('34', 'Các loại cảm biến', 'Tiện ích khác');
 INSERT INTO `attributes` (`id`, `name`, `group_name`) VALUES ('35', 'Tính năng đặc biệt', 'Tiện ích khác');
 INSERT INTO `attributes` (`id`, `name`, `group_name`) VALUES ('36', 'Chất liệu mặt kính', 'Thiết kế & Trọng lượng');
-
-INSERT INTO `user` (`id`, `firstName`, `middleName`, `lastName`, `mobile`, `email`, `hashedPassword`, `registeredAt`, `lastLogin`, `passwordChangedAt`, `isAdmin`) VALUES (NULL, 'Lê', 'Quốc', 'Trạng', '0399609015', 'lequoctrang4@gmail.com', 'Lequoctrang4', '2023-03-25', '2023-03-25', '2023-03-25', '0')
 
 
 

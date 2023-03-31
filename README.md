@@ -5,3 +5,8 @@ setting PORT Apache: 80
 Chạy file db.sql
 
 Vào thư mục "backend/src" copy thư mục "api" sang "frontend/src" -> import module vào file app.js -> use api
+
+
+
+Note:
+Cách upload Multifile để đồng bộ với Backend: https://www.php.net/manual/en/features.file-upload.multiple.php 

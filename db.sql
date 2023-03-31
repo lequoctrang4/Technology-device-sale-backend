@@ -33,7 +33,7 @@ create table if not exists `user` (
     `middleName` varchar(20) not null,
     `lastName` varchar(20) not null,
     `mobile` varchar(20) unique not null,
-    `email` varchar(50),
+    `email` varchar(50) unique not null,
     `hashedPassword` varchar(200) not null,
     `registeredAt` date not null,
     `lastLogin` date not null,

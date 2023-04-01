@@ -26,6 +26,7 @@ function setupRoute() {
   $router->get('/user/getAvatar', 'userController/getAvatar');
   $router->patch('/user/editProfile', 'userController/editProfile');
   $router->patch('/user/changePassword', 'userController/changePassword');
+  $router->post('/user/forgetPassword', 'userController/forgetPassword');
 
 
   // // Dynamic GET. Example with 2 variables with static

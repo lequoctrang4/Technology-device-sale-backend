@@ -143,6 +143,9 @@ class userController extends Controller
         $mess = $con->updatePassword($user["mobile"], $hashPassword);
         echo json_encode($mess);
     }
+    function forgetPassword(){
+        echo json_encode("Chưa làm!");
+    }
 
 }
 ?>

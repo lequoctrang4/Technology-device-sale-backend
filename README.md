@@ -6,6 +6,8 @@ Chạy file db.sql
 
 Vào thư mục "backend/src" copy thư mục "api" sang "frontend/src" -> import module vào file app.js -> use api
 
+Nhớ chạy lệnh: npm i axios
+
 
 
 Note:

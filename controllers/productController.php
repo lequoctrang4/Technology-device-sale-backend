@@ -1,7 +1,7 @@
 <?php
 
 require_once __DIR__ . "/../core/Controller.php";
-class Product extends Controller
+class productController extends Controller
 {
     function getProducts() // Return: [product]
     {

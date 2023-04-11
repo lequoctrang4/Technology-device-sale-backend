@@ -29,10 +29,10 @@ function setupRoute() {
   $router->post('/user/forgetPassword', 'userController/forgetPassword');
 
   //Review
-  $router->get('/review/get/$product_id', 'reviewController/getReviewByProductId');
+  $router->get('/review/get/$productId', 'reviewController/getReviewByProductId');
   $router->post('/review/add', 'reviewController/addReview');
-  $router->patch('/review/edit/$review_id', 'reviewController/editReview');
-  $router->delete('/review/delete/$review_id', 'reviewController/deleteReview');
+  $router->patch('/review/edit/$reviewId', 'reviewController/editReview');
+  $router->delete('/review/delete/$reviewId', 'reviewController/deleteReview');
 
 
 

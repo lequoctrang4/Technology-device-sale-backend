@@ -12,7 +12,7 @@ class userController extends Controller
         if (!isset(apache_request_headers()["Authorization"]) || !preg_match('/Bearer\s(\S+)/', apache_request_headers()["Authorization"], $matches))
             throw new Exception("Cannot find token!",400);
         $user = authenticate($matches[1]);
-        $result =  $con->getUserProfileByPhone($user["mobile"]);
+        $result =  $con->getUserProfileById($user["id"]);
         echo json_encode($result);
     }
     function signIn(){
@@ -31,7 +31,7 @@ class userController extends Controller
             $user = $con->getUserProfileByPhone($mobile);
             $date = new DateTimeImmutable();
             $expire_at = $date->modify('+5 days')->getTimestamp();
-            $payload = Array("id"=>$user["id"], "mobile"=>$user["mobile"],"email"=>$user["email"],"expire_at"=>$expire_at);
+            $payload = Array("id"=>$user["id"], "isAdmin"=>$user["isAdmin"],"exp"=>$expire_at);
             $jwt = JWT::encode($payload, $key, 'HS256');
             $user["token"] = $jwt;
             echo json_encode($user);
@@ -81,18 +81,19 @@ class userController extends Controller
                 throw new Exception("Cannot find token!",400);
             }
             $user = authenticate($matches[1]);
+
             $avatar = $_FILES["avatar"]["name"];
             $extension = pathinfo($avatar)["extension"];
             if (mb_strtolower($extension) != "png" && mb_strtolower($extension) != "jpg" && mb_strtolower($extension) != "jpeg"){
                 throw new Exception("We only allow png or jpg files!", 400);
             }
             $tempname = $_FILES["avatar"]["tmp_name"];
-            $avatar = $user["mobile"].".".$extension;
+            $avatar = $user["id"].".".$extension;
             $folder = __DIR__ . "/../images/user/" . $avatar;
             if (!move_uploaded_file($tempname, $folder)) {
                 throw new Exception("Fail to change avatar!", 500);
             }
-            $con->updateAvatar($avatar, $user["mobile"]);
+            $con->updateAvatar($avatar, $user["id"]);
             echo json_encode(["message" => "Uploaded image sucessfully!"]);
         }
         catch(Exception $e){
@@ -129,20 +130,19 @@ class userController extends Controller
                 throw new Exception("Cannot find token!",400);
             }
             $user = authenticate($matches[1]);
-            if ($data['firstName'] == '' || $data['middleName'] == '' || $data['lastName'] == '')
+            if ($data['name'] == '')
                 throw new Exception("Bạn cần phải nhập đầy đủ họ và tên!", 400);
             if (! preg_match('/^[0-9]{10}+$/', $data['mobile']))
                 throw new Exception("Bạn cần phải nhập đúng số điện thoại!", 400);
             if (!filter_var($data['email'], FILTER_VALIDATE_EMAIL))
                 throw new Exception("Định dạng Email không đúng", 400);
-            $fname = $data["firstName"];
-            $mname = $data["middleName"];
-            $lname = $data["lastName"];
+            $name = $data["name"];
             $mobile = $data["mobile"];
             $email = $data["email"];
-            if ($con->checkUserExistence($mobile)) 
+            $User = $con->getUserProfileByPhone($mobile);
+            if (sizeof($User) && $User['mobile'] != $mobile) 
                 throw new Exception("Số điện thoại đã tồn tại", 400);
-            $newUser = $con->editProfile($fname, $mname, $lname, $mobile, $email, $user["id"]);
+            $newUser = $con->editProfile($name, $mobile, $email, $user["id"]);
             echo json_encode($newUser);
         }
         catch(Exception $e){

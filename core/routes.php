@@ -12,11 +12,11 @@ function setupRoute() {
   // The $last_name will be available in full_name.php
   // In the browser point to: localhost/user/X/Y
   //product
-  $router->get('/products', 'product/getProducts');
-  $router->get('/product/$id', 'product/getProductById');
-  $router->post('/product', 'product/createProduct');
-  $router->patch('/product', 'product/updateProduct');
-  $router->delete('/product/$id', 'product/deleteProduct');
+  $router->get('/products', 'productController/getProducts');
+  $router->get('/product/$id', 'productController/getProductById');
+  $router->post('/product', 'productController/createProduct');
+  $router->patch('/product', 'productController/updateProduct');
+  $router->delete('/product/$id', 'productController/deleteProduct');
 
   //user
   $router->get('/user/profile', 'userController/getProfile');

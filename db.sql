@@ -5,10 +5,11 @@ create table if not exists `product` (
     `id` int not null auto_increment,
     `name` varchar(100) not null,
     `color` varchar(30) not null,
-    `salePercent` float not null default 0,
+    `salePercent` int not null default 0,
     `price` int not null,
     `manufacturer` varchar(100) not null,
-    `html` varchar(10000) not null,
+    `html` varchar(100),
+    `image` varchar(255),
     primary key(`id`)
 );
 

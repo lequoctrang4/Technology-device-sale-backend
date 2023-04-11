@@ -47,7 +47,7 @@ class userController extends Controller
         try{
             parse_str(file_get_contents('php://input'),$data);
             $con = $this->model("userModel");
-            if ($data['firstName'] == '' || $data['middleName'] == '' || $data['lastName'] == '')
+            if ($data['name'] == '')
                 throw new Exception("Bạn cần phải nhập đầy đủ họ và tên!", 400);
             if (! preg_match('/^[0-9]{10}+$/', $data['mobile']))
                 throw new Exception("Bạn cần phải nhập số điện thoại!", 400);
@@ -57,9 +57,7 @@ class userController extends Controller
                 throw new Exception("Độ dài mật khẩu ít nhất là 10!", 400);
             if ($data['password'] != $data['confirmPassword'])
                 throw new Exception("Nhập lại mật khẩu không đúng!", 400);
-            $fname = $data["firstName"];
-            $mname = $data["middleName"];
-            $lname = $data["lastName"];
+            $name = $data["name"];
             $mobile = $data["mobile"];
             $email = $data["email"];
             $password = $data["password"];
@@ -67,7 +65,7 @@ class userController extends Controller
                 throw new Exception("Số điện thoại đã tồn tại", 400);
             }
             $hashPassword =  password_hash($password,PASSWORD_DEFAULT);
-            echo json_encode($con->createNewUser($fname, $mname, $lname, $mobile, $email, $hashPassword, 0));
+            echo json_encode($con->createNewUser($name, $mobile, $email, $hashPassword, 0));
         }
         catch(Exception $e){
             http_response_code($e->getCode());

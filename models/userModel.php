@@ -15,8 +15,7 @@ class UserModel{
         $stmt->execute(); 
         $result = $stmt->get_result();
         if ($row = $result->fetch_assoc()) {
-            $newUser = array("id" => $row["id"],"firstName" => $row["firstName"],"middleName" => $row["middleName"],
-                "lastName" => $row["lastName"],"mobile" => $row["mobile"], 
+            $newUser = array("id" => $row["id"],"name" => $row["name"],"mobile" => $row["mobile"], 
                 "email" => $row["email"], "isAdmin" => $row["isAdmin"], "avatar" => $row["avatar"]);
         }
         return $newUser;
@@ -28,8 +27,7 @@ class UserModel{
         $stmt->execute(); 
         $result = $stmt->get_result();
         if ($row = $result->fetch_assoc()) {
-            $newUser = array("id" => $row["id"],"firstName" => $row["firstName"],"middleName" => $row["middleName"],
-                "lastName" => $row["lastName"],"mobile" => $row["mobile"], 
+            $newUser = array("id" => $row["id"],"name" => $row["name"],"mobile" => $row["mobile"], 
                 "email" => $row["email"], "isAdmin" => $row["isAdmin"], "avatar" => $row["avatar"]);
         }
         return $newUser;
@@ -46,11 +44,11 @@ class UserModel{
         }
         return count($user);
     }
-    function createNewUser($firstName, $middleName, $lastName, $mobile, $email, $password, $isAdmin){
+    function createNewUser($name, $mobile, $email, $password, $isAdmin){
         $conn = DbConnection::getInstance();
-        $stmt = $conn->prepare("INSERT INTO user(firstName, middleName, lastName, mobile, email, hashedPassword, registeredAt, lastLogin, passwordChangedAt,isAdmin,avatar) 
+        $stmt = $conn->prepare("INSERT INTO user(name, mobile, email, hashedPassword, registeredAt, lastLogin, passwordChangedAt,isAdmin,avatar) 
                 VALUES (?, ?, ?, ?, ?, ?, CURRENT_DATE, CURRENT_DATE, CURRENT_DATE, ?, '')");
-        $stmt->bind_param('ssssssi',$firstName, $middleName, $lastName, $mobile, $email, $password, $isAdmin); // 's' specifies the variable type => 'string'
+        $stmt->bind_param('ssssi', $name, $mobile, $email, $password, $isAdmin); // 's' specifies the variable type => 'string'
         $stmt->execute(); 
         $newUser = self::getUserProfileByPhone($mobile);
         return $newUser;
@@ -89,11 +87,11 @@ class UserModel{
         $stmt->execute();
         return ["message" => "Update successful"]; 
     }
-    function editProfile($firstName, $middleName, $lastName, $mobile, $email, $id){
+    function editProfile($name, $mobile, $email, $id){
         $conn = DbConnection::getInstance();
-        $stmt = $conn->prepare("UPDATE  user set firstName = ?, middleName = ?, lastName = ?, mobile = ?, email = ?
+        $stmt = $conn->prepare("UPDATE  user set name = ?, mobile = ?, email = ?
                 where id= ?");
-        $stmt->bind_param('sssssi',$firstName, $middleName, $lastName, $mobile, $email, $id); // 's' specifies the variable type => 'string'
+        $stmt->bind_param('sssi',$name, $mobile, $email, $id); // 's' specifies the variable type => 'string'
         $stmt->execute(); 
         $newUser = self::getUserProfileByPhone($mobile);
         return $newUser;

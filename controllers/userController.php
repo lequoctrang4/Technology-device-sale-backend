@@ -21,11 +21,13 @@ class userController extends Controller
             $con = $this->model("userModel");
             $mobile = $data["mobile"];
             $password = $data["password"];
+            if (! preg_match('/^[0-9]{10}+$/', $data['mobile']))
+                throw new Exception("Nhập sai số điện thoại!", 400);
             if (!$con->checkUserExistence($mobile)){
-                throw new Exception("User has not signed up yet!", 400);
+                throw new Exception("Người dùng không tồn tại!", 400);
             }
             if (!$con->comparePassword($mobile, $password)){
-                throw new Exception("Your password is incorrect!", 400);
+                throw new Exception("Mật khẩu sai!", 400);
             }
             $key = "lequoctrang";
             $user = $con->getUserProfileByPhone($mobile);

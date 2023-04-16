@@ -136,6 +136,26 @@ class ProductController
             $this->response->setBody('Product id is missed');
         }
     }
+    function getProductByName()
+    {
+        $name = $this->request->getQueryParameters()['name'];
+        if ($name != null) {
+            [$status, $err] = $this->model->getProductByName($name);
+            if ($status) {
+                $this->response->setStatus(200);
+                $this->response->setHeader('Content-type', 'application/json');
+                $this->response->setBody($err);
+            } else {
+                $this->response->setStatus(404);
+                $this->response->setBody($err);
+            }
+            return;
+        } else {
+            // $this->response->setContent('Product id is '. $data['id']);
+            $this->response->setStatus(404);
+            $this->response->setBody('Product id is missed');
+        }
+    }
     function getCategories()
     {
         [$status, $err] = $this->model->getCategories();

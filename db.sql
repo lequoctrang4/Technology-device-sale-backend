@@ -35,9 +35,9 @@ create table if not exists `user` (
     `mobile` varchar(20) unique not null,
     `email` varchar(50) unique not null,
     `hashedPassword` varchar(200) not null,
-    `registeredAt` datetime not null,
-    `lastLogin` datetime not null,
-    `passwordChangedAt` datetime not null,
+    `registeredAt` datetime not null default current_timestamp,
+    `lastLogin` datetime not null default current_timestamp,
+    `passwordChangedAt` datetime not null default current_timestamp,
     `isAdmin` tinyint(1) not null default 0,
     `avatar` varchar(100) not null,
     primary key(`id`)
@@ -107,8 +107,8 @@ create table if not exists `transaction` (
     `code` varchar(10),
     `type` varchar(10) not null,
     `status` int not null,
-    `createdAt` datetime not null,
-    `updatedAt` datetime not null,
+    `createdAt` datetime not null default current_timestamp,
+    `updatedAt` datetime not null default current_timestamp,
     primary key (`id`, `userId`, `orderId`),
     foreign key (`userId`) references `user`(`id`) ON DELETE NO ACTION,
     foreign key (`orderId`) references `order`(`id`) ON DELETE NO ACTION
@@ -152,7 +152,7 @@ create table if not exists `review` (
     `productId` int NOT NULL,
     `userId` int NOT NULL,
     `star` int NOT NULL,
-    `date` datetime NOT NULL,
+    `date` datetime NOT NULL default current_timestamp,
     `content` varchar(2000) NOT NULL,
     primary key(`id`),
     foreign key (`productId`) references `product`(`id`) ON DELETE CASCADE ON UPDATE CASCADE,
@@ -163,6 +163,31 @@ INSERT INTO `category` (`id`, `title`) VALUES ('1', 'Điện thoại');
 INSERT INTO `category` (`id`, `title`) VALUES ('2', 'Laptop');
 INSERT INTO `category` (`id`, `title`) VALUES ('3', 'Máy tính bảng');
 INSERT INTO `category` (`id`, `title`) VALUES ('4', 'Đồng hồ');
+
+INSERT INTO `product` (`id`, `name`, `color`, `salePercent`, `price`, `manufacturer`, `html`, `image`) VALUES
+(1, 'iPhone 13 128GB', 'Hồng', 20, 24990000, 'Apple', '', 'https://cdn2.cellphones.com.vn/358x358,webp,q100/media /catalog/product/1/4/14_1_9_2_9.jpg'),
+(2, 'iPhone 13 128GB', 'Đen', 20, 24990000, 'Apple', '', 'https://cdn2.cellphones.com.vn/358x/media/catalog/product /_/e/_vi_2_5.jpg'),
+(3, 'iPhone 13 128GB', 'Xanh', 20, 24990000, 'Apple', '', 'https://cdn2.cellphones.com.vn/358x/media/catalog/product /x/n/xnnah_kas_3.png'),
+(4, 'iPhone 13 128GB', 'Trắng', 20, 24990000, 'Apple', '', 'https://cdn2.cellphones.com.vn/358x/media/catalog/product /t/r/tr_ng_5.jpg'),
+(5, 'iPhone 13 128GB', 'Đỏ', 20, 24990000, 'Apple', '', 'https://cdn2.cellphones.com.vn/358x/media/catalog/product /f/i/file_3_10.jpg'),
+(6, 'iPhone 13 128GB', 'Xanh dương', 20, 24990000, 'Apple', '', 'https://cdn2.cellphones.com.vn/358x/media/catalog/product /d/_/d_ng_3.jpg'),
+(7, 'iPhone 13 256GB', 'Hồng', 20, 27990000, 'Apple', '', 'https://cdn2.cellphones.com.vn/358x/media/catalog/product /d/_/d_ng_3.jpg'),
+(8, 'iPhone 13 256GB', 'Đen', 20, 27990000, 'Apple', '', 'https://cdn2.cellphones.com.vn/358x/media/catalog/product /_/e/_vi_2_5.jpg'),
+(9, 'iPhone 13 256GB', 'Xanh', 20, 27990000, 'Apple', '', 'https://cdn2.cellphones.com.vn/358x/media/catalog/product /x/n/xnnah_kas_3.png'),
+(10, 'iPhone 13 256GB', 'Trắng', 20, 27990000, 'Apple', '', 'https://cdn2.cellphones.com.vn/358x/media/catalog/product /t/r/tr_ng_5.jpg'),
+(11, 'iPhone 13 256GB', 'Đỏ', 20, 27990000, 'Apple', '', 'https://cdn2.cellphones.com.vn/358x/media/catalog/product /f/i/file_3_10.jpg'),
+(12, 'iPhone 13 256GB', 'Xanh dương', 20, 27990000, 'Apple', '', 'https://cdn2.cellphones.com.vn/358x/media/catalog/product /d/_/d_ng_3.jpg'),
+(13, 'Apple MacBook Air M1 256GB 2020', 'Trắng', 30, 28990000, 'Apple', '', 'https://cdn2.cellphones.com.vn/358x358,webp, q100/media/catalog/product/a/i/air_m2.png'),
+(14, 'Laptop HP Gaming Victus 15-FA0031DX 6503849', 'Đen', 20, 22990000, 'Hp', '', 'https://cdn2.cellphones.com.vn/358x358, webp,q100/media/catalog/product/l/a/laptop-hp-gaming-victus-15-fa0031dx-6503849-6.jpg'),
+(15, 'Laptop Dell Inspiron 3511 5829BLK', 'Đen', 10, 15990000, 'Dell', '', 'https://cdn2.cellphones.com.vn/358x358,webp,q100 /media/catalog/product/t/e/text_ng_n_3__1_71.png'),
+(16, 'Máy tính xách tay Asus Gaming Rog Strix G15 G513IH HN015W', 'Đen', 20, 23990000, 'Asus', '', 'https://cdn2.cellphones.com.vn/358x358, webp,q100/media/catalog/product/4/h/4h43.png'),
+(17, 'Laptop Lenovo Ideapad Gaming 3 15ARH7', 'Đen', 20, 25490000, 'Lenevo', '', 'https://cdn2.cellphones.com.vn/358x358,webp, q100/media/catalog/product/1/h/1h47.png'),
+(18, 'Laptop Lenovo Ideapad Gaming 3 15ARH7', 'Đen', 20, 25490000, 'Lenevo', '', 'https://cdn2.cellphones.com.vn/358x358,webp, q100/media/catalog/product/1/h/1h47.png'),
+(19, 'iPad 120 2021 WiFi 64GB', 'Silver', 20, 10990000, 'Apple', '', 'https://cdn2.cellphones.com.vn/358x358,webp,q100 /media/catalog/product/i/p/ipad-10-2-2021-2_6_1.png'),
+(20, 'iPad Air 5 (2022) 64GB', 'Xanh dương', 10, 16990000, 'Apple', '', 'hDbConnection://cdn2.cellphones.com.vn/358x358,webp,q100 /media/catalog/product/w/a/watch-se.jpg'),
+(28, 'Samsung Galaxy S23 Ultra 256GB', 'Đen', 20, 41990990, 'Samsung', '', 'https://cdn2.cellphones.com.vn/358x358,webp,q100 /media/catalog/product/s/2/s23-ultra-tim.png'),
+(29, 'Samsung Galaxy A34 5G 8GB 128GB', 'Đen', 10, 8490000, 'Samsung', '', 'https://cdn2.cellphones.com.vn/358x358,webp, q100/media/catalog/product/s/m/sm-a346_galaxy_a34_5g_awesome_silver_front.png'),
+(30, 'Xiaomi Redmi Note 11 128GB', 'Đen', 10, 4990000, 'Xiaomi', 'HFHRY43.html', 'https://cdn2.cellphones.com.vn/358x358, webp,q100/media/catalog/product/8/0/800x800-640x640-5.png');
 
 INSERT INTO `product` (`id`, `name`, `color`, `salePercent`, `price`, `manufacturer`, `html`, `image`) VALUES
 (1, 'iPhone 13 128GB', 'Hồng', 20, 24990000, 'Apple', '', 'https://cdn2.cellphones.com.vn/358x358,webp,q100/media /catalog/product/1/4/14_1_9_2_9.jpg'),

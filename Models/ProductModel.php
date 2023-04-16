@@ -59,6 +59,18 @@ class ProductModel
         }
         return [true, json_encode($res)];
     }
+    function getProductByName($name)
+    {
+        $qr = "SELECT * FROM `product` where name = $name";
+        $res = $this->con->query($qr);
+        $res =  get_array_from_result($res);
+        if (!empty($res)) {
+            return [true, json_encode($res)];
+        } else {
+            return [true, json_encode(["Not found product with name: $name"])];
+        }
+        return [true, json_encode($res)];
+    }
     function createProduct($params)
     {
         $qr = "insert into product (name, color, salePercent, price, manufacturer, html) values (\"$params->name\", \"$params->color\", \"$params->salePercent\", \"$params->price\", \"$params->manufacturer\", \"$params->html\");";

@@ -8,4 +8,3 @@
     // require_once  './core/App.php';
     require __DIR__.'/core/Bootstrap.php';
     // $myApp = new App();
-?>

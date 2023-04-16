@@ -26,13 +26,14 @@ class ReviewController
         $this->response = $response;
         $this->model = new ReviewModel();
     }
-    function getReviewByProductId($productId)
+    function getReviewByProductId()
     {
         // $productId = $productId[0];
         $id = $this->request->getQueryParameters()['id'];
         if ($id != null) {
             [$status, $err] =  $this->model->getReviewByProductId($id);
             if ($status) {
+                $this->response->setHeader('Content-type', 'application/json');
                 $this->response->setStatus(200);
                 $this->response->setBody($err);
             } else {
@@ -49,7 +50,7 @@ class ReviewController
         $data = [
             'review' => json_decode($this->request->getBodyAsString())
         ];
-        [$status, $err] = $this->model->addReview($data['product']);
+        [$status, $err] = $this->model->addReview($data['review']);
         if ($status) {
             $this->response->setStatus(200);
             $this->response->setHeader('Content-type', 'application/json');
@@ -65,6 +66,8 @@ class ReviewController
         ];
         if ($data['review'] != null) {
             [$status, $err] = $this->model->editReview($data['review']);
+            $this->response->setHeader('Content-type', 'application/json');
+
             if ($status) {
                 $this->response->setStatus(200);
             } else {

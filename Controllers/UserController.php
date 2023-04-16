@@ -45,18 +45,20 @@ class UserController
         try {
             // parse_str(file_get_contents('php://input'),$data);
             $avatar = $_FILES["avatar"]["name"];
+            // var_dump($avatar);
+            // return;
             $extension = pathinfo($avatar)["extension"];
             if (mb_strtolower($extension) != "png" && mb_strtolower($extension) != "jpg" && mb_strtolower($extension) != "jpeg") {
                 throw new Exception("We only allow png or jpg files!", 400);
             }
             $tempname = $_FILES["avatar"]["tmp_name"];
-            $user = $this->request->getHeader('User-info');
-            $avatar = $user["mobile"] . "." . $extension;
+            $user = json_decode($this->request->getHeader('User-info'));
+            $avatar = $user->mobile . "." . $extension;
             $folder = __DIR__ . "/../images/user/" . $avatar;
             if (!move_uploaded_file($tempname, $folder)) {
                 throw new Exception("Fail to change avatar!", 500);
             }
-            $this->model->updateAvatar($avatar, $user["mobile"]);
+            $this->model->updateAvatar($avatar, $user->mobile);
             $this->response->setStatus(200);
             $this->response->setBody(json_encode(["message" => "Uploaded image sucessfully!"]));
         } catch (Exception $e) {
@@ -70,13 +72,13 @@ class UserController
         try {
             [$status, $err] = $this->model->getAvatarFileName($user->id);
             if ($status) {
-                var_dump($err);
-                // $name = __DIR__ . "/../images/user/$fileName";
-                // $type = pathinfo($name, PATHINFO_EXTENSION);
-                // $data = file_get_contents($name);
-                // $base64 = 'data:image/' . $type . ';base64,' . base64_encode($data);
+                $err = json_decode($err)[0];
+                $name = __DIR__ . "/../images/user/$err->avatar";
+                $type = pathinfo($name, PATHINFO_EXTENSION);
+                $data = file_get_contents($name);
+                $base64 = 'data:image/' . $type . ';base64,' . base64_encode($data);
                 $this->response->setStatus(200);
-                // $this->response->setBody(json_encode(array("avatar" => $base64)));
+                $this->response->setBody(json_encode(array("avatar" => $base64)));
                 return;
             }
         } catch (Exception $e) {
@@ -87,36 +89,39 @@ class UserController
     function editProfile()
     {
         try {
-            $data = $this->request->getBody();
+            $data = json_decode($this->request->getBodyAsString());
             $user = json_decode($this->request->getHeader('User-info'));
-            if ($data['firstName'] == '' || $data['middleName'] == '' || $data['lastName'] == '')
+            if ($user->id !== $data->id) {
+                throw new Exception("Token mismatch!", 404);
+            }
+            if (isset($data->name) && $data->name == '')
                 throw new Exception("Bạn cần phải nhập đầy đủ họ và tên!", 400);
-            if (!preg_match('/^[0-9]{10}+$/', $data['mobile']))
+            if (isset($data->mobile) && !preg_match('/^[0-9]{10}+$/', $data->mobile))
                 throw new Exception("Bạn cần phải nhập đúng số điện thoại!", 400);
-            if (!filter_var($data['email'], FILTER_VALIDATE_EMAIL))
+            if (isset($data->email) && !filter_var($data->email, FILTER_VALIDATE_EMAIL))
                 throw new Exception("Định dạng Email không đúng", 400);
-            $fname = $data["firstName"];
-            $mname = $data["middleName"];
-            $lname = $data["lastName"];
-            $mobile = $data["mobile"];
-            $email = $data["email"];
-            [$status, $err] = $this->model->checkUserExistence($mobile);
-            if ($status)
-                throw new Exception("Số điện thoại đã tồn tại", 400);
-            [$status, $err] = $this->model->editProfile($fname, $mname, $lname, $mobile, $email, $user["id"]);
+            $params = [];
+            foreach ($data as $key => $value) {
+                $params[$key] = $value;
+            };
+            [$status, $err] = $this->model->editProfile($params, $user->id);
             if ($status) {
                 $this->response->setStatus(200);
                 $this->response->setBody($err);
+                $this->response->setHeader('Content-type', 'application/json');
+                return;
             } else {
                 throw new Exception("Can't edit profile", 500);
             }
         } catch (Exception $e) {
             $this->response->setStatus($e->getCode());
+            $this->response->setHeader('Content-type', 'application/json');
             $this->response->setBody(json_encode(array("msg" => $e->getMessage())));
         }
     }
     function changePassword()
     {
+        echo "hlo";
         try {
             $data = $this->request->getBody();
             $user = json_decode($this->request->getHeader('User-info'));

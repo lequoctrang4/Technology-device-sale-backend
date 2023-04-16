@@ -11,6 +11,7 @@ use Main\Models\UserModel;
 use DateTimeImmutable;
 use Firebase\JWT\JWT;
 
+require_once __DIR__ . "/../Utils/JWTUtils.php";
 require_once __DIR__ . "/../Utils/SqlUtils.php";
 
 
@@ -51,10 +52,11 @@ class AccountController
             $key = "privatekey";
             if ($status) {
                 $user = json_decode($err)[0];
-                $date = new DateTimeImmutable();
-                $expire_at = $date->modify('+5 days')->getTimestamp();
-                $payload = array("id" => $user->id, "mobile" => $user->mobile, "email" => $user->email, "isAdmin" => $user->isAdmin, "expire_at" => $expire_at);
-                $jwt = JWT::encode($payload, $key, 'HS256');
+                $jwt = getUserToken($user, $key);
+                // $date = new DateTimeImmutable();
+                // $expire_at = $date->modify('+5 days')->getTimestamp();
+                // $payload = array("id" => $user->id, "mobile" => $user->mobile, "email" => $user->email, "isAdmin" => $user->isAdmin, "expire_at" => $expire_at);
+                // $jwt = JWT::encode($payload, $key, 'HS256');
                 // $jwt = '';
                 $user = [
                     "token" => $jwt
@@ -91,10 +93,7 @@ class AccountController
             // $fname = $data->firstName;
             // $mname = $data->middleName;
             // $lname = $data->lastName;
-            $fname = "hello";
-            $mname = "mid";
-            $lname = "last";
-
+            $name = $data->name;
             $mobile = $data->mobile;
             $email = $data->email;
             $password = $data->password;
@@ -104,7 +103,7 @@ class AccountController
             }
             $hashPassword = password_hash($password, PASSWORD_DEFAULT);
 
-            [$status, $err] = $this->model->createNewUser($fname, $mname, $lname, $mobile, $email, $hashPassword, 0);
+            [$status, $err] = $this->model->createNewUser($name, $mobile, $email, $hashPassword, 0);
             if ($status) {
                 $this->response->setStatus(200);
                 $this->response->setHeader('Content-type', 'application/json');

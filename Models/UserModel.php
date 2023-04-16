@@ -2,9 +2,11 @@
 // require_once('dbConnection.php');
 namespace Main\Models;
 
+use Exception;
 use Main\Models\DbConnection;
 
-require_once "./Utils/SqlUtils.php";
+require_once __DIR__ . "/../Utils/JWTUtils.php";
+require_once  __DIR__ . "/../Utils/SqlUtils.php";
 class UserModel
 {
     protected $con = null;
@@ -84,31 +86,21 @@ class UserModel
         }
         return [true, json_encode($res)];
     }
-    function createNewUser($firstName, $middleName, $lastName, $mobile, $email, $password, $isAdmin)
+    function createNewUser($name, $mobile, $email, $password, $isAdmin)
     {
         $qr = "INSERT INTO user(
-            firstName,
-            middleName,
-            lastName,
+            name,
             mobile,
             email,
             hashedPassword,
-            registeredAt,
-            lastLogin,
-            passwordChangedAt,
             isAdmin,
             avatar
             ) 
             VALUES (
-                \"$firstName\",
-                \"$middleName\",
-                \"$lastName\",
+                \"$name\",
                 \"$mobile\",
                 \"$email\",
                 \"$password\",
-                CURRENT_DATE,
-                CURRENT_DATE,
-                CURRENT_DATE,
                 $isAdmin,
                 ''
                 )";
@@ -146,10 +138,9 @@ class UserModel
 
     function updateAvatar($fileName, $phone)
     {
-        $stmt = $this->con->prepare("update user set avatar = ? where mobile = ?");
-        $stmt->bind_param('ss', $fileName, $phone); // 's' specifies the variable type => 'string'
-        $stmt->execute();
-        $res = $stmt->get_result();
+        $qr = "update user set avatar = \"$fileName\" where mobile = \"$phone\"";
+        // $stmt->bind_param('ss', $fileName, $phone); // 's' specifies the variable type => 'string'
+        $res = $this->con->query($qr);
         if ($res) {
             return $this->getUserProfileByPhone($phone);
         } else {
@@ -190,12 +181,29 @@ class UserModel
             return [false, "Can\'t update password for user with phone: $phone"];
         }
     }
-    function editProfile($firstName, $middleName, $lastName, $mobile, $email, $id)
+    function editProfile($params, $id)
     {
-        $stmt = $this->con->prepare("UPDATE  user set firstName = ?, middleName = ?, lastName = ?, mobile = ?, email = ?
-                where id= ?");
-        $stmt->bind_param('sssssi', $firstName, $middleName, $lastName, $mobile, $email, $id); // 's' specifies the variable type => 'string'
-        $stmt->execute();
-        return $this->getUserProfileByPhone($mobile);
+        $qrParams = [];
+        foreach ($params as $key => $value) {
+            $qrParams[] =  "$key=\"$value\"";
+        };
+        $qr = "UPDATE  user set " . implode(',', $qrParams) . " where id= $id";
+        try {
+            $res = $this->con->query($qr);
+            if ($res) {
+                [$status, $user] = $this->getUserProfileById($id);
+                $key = "privatekey";
+
+                $result = [
+                    "token" => getUserToken(json_decode($user)[0], $key)
+                ];
+                return [true, json_encode($result)];
+            } else {
+                return [false, json_encode(['msg' => 'failed edit review'])];
+            }
+        } catch (Exception $e) {
+            return [false, json_encode(['msg' => $e->getMessage()])];
+        }
+        return $this->getUserProfileById($id);
     }
 }

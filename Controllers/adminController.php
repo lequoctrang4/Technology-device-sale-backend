@@ -19,37 +19,4 @@ if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
     exit(0);
 }
 $path = explode('/', parse_url($_SERVER["REQUEST_URI"])["path"]);
-
-require_once("../models/productModel.php");
-$method = $_SERVER["REQUEST_METHOD"];
-try{
-        switch ($method){
-            case "GET":
-                switch($path[3]){
-                    case "products":
-                       
-                        break;
-                    case "product":
-                        
-                        break;
-                    case "searchItem":
-                        
-                        break;
-                } 
-                break;
-            case "POST": 
-                break;
-            case "PATCH":
-                break;
-            case "DELETE":
-                break;
-    
-        }
-    }
-    catch(Exception $e){
-        http_response_code($e->getCode());
-        echo json_encode(Array("message"=>$e->getMessage()));
-
-    }
-
-?>
+echo json_encode("124");

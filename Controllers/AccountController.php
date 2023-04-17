@@ -37,16 +37,14 @@ class AccountController
             $password = $data->password;
             [$status, $err] = $this->model->checkUserExistence($mobile);
             if (!$status) {
-
-                $this->response->setBody("User has not signed up yet!");
-                $this->response->setStatus(400);
-                return;
+                throw new Exception ("User has not signed up yet!", 400);
             }
             [$status, $err] = $this->model->comparePassword($mobile, $password);
             if (!$status) {
-                $this->response->setStatus(400);
-                $this->response->setBody($err);
-                return;
+                throw new Exception ($err, 400);
+
+                // $this->response->setStatus(400);
+                // $this->response->setBody($err);
             }
             [$status, $err] = $this->model->getUserProfileByPhone($mobile);
             $key = "privatekey";
@@ -90,9 +88,6 @@ class AccountController
                 throw new Exception("Độ dài mật khẩu ít nhất là 10!", 400);
             if ($data->password != $data->confirmPassword)
                 throw new Exception("Nhập lại mật khẩu không đúng!", 400);
-            // $fname = $data->firstName;
-            // $mname = $data->middleName;
-            // $lname = $data->lastName;
             $name = $data->name;
             $mobile = $data->mobile;
             $email = $data->email;

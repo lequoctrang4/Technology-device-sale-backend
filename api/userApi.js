@@ -2,12 +2,13 @@ import axios from "axios";
 
 export const signIn = async(formValue) => {
     try {
-      // make axios post request
+      // mobile:
+      // password:
       const res = await axios({
         method: "post",
         url: `http://localhost/user/signIn`,
         data: formValue,
-        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        headers: { "Content-Type": "application/json" },
       });
       return res.data;
     } catch(error) {
@@ -15,14 +16,19 @@ export const signIn = async(formValue) => {
     }
   }
 export const signUp = async(formValue) => {
-
     try {
-      // make axios post request
+    //   {
+      // "name": "Lê Quốc Trạng",
+      // "mobile": "0399609015",
+      // "email": "lequoctrang5@gmail.com",
+      // "password": "Lequoctrang",
+      // "confirmPassword": "Lequoctrang"
+    // }
       const res = await axios({
         method: "post",
         url: `http://localhost/user/signUp`,
         data: formValue,
-        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        headers: { "Content-Type": "application/json" },
       });
       return res.data;
     } catch(error) {

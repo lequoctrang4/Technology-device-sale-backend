@@ -211,8 +211,12 @@ class ProductController
     }
     function getProductsHandler()
     {
-        $category = $this->request->getQueryParameters()['categoryId'];
-        $manufactor = $this->request->getQueryParameters()['manufacturer'];
+        $arr = $this->request->getQueryParameters();
+        $category = $manufactor = null;
+        if (array_key_exists('categoryId', $arr))
+            $category = $arr['categoryId'];
+        else if (array_key_exists('manufacturer', $arr))
+            $manufactor = $arr['manufacturer'];
         if ($category != null) {
             $this->getProductsByCategory();
             return;

@@ -131,6 +131,8 @@ class ProductController
                 $this->response->setStatus(404);
                 $this->response->setBody($err);
             }
+            $this->response->setBody('Delete Product Success');
+
         } else {
             // $this->response->setContent('Product id is '. $data['id']);
             $this->response->setBody('Product id is missed');

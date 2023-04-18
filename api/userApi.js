@@ -59,7 +59,7 @@ export const editProfile = async(token, formValue) => {
         url: `http://localhost/user/editProfile`,
         data: formValue,
         headers: {Authorization: `Bearer ${token}`,
-                  'content-type': 'application/raw' }
+                  'content-type': 'application/json' }
       });
       return res.data;
     } catch(error) {
@@ -134,7 +134,7 @@ export const getProductsByCate = async (category_id) => {
     // make axios post request
     const res = await axios({
       method: "get",
-      url: `localhost/products/${category_id}`,
+      url: `localhost/products/?categoryId=${category_id}`,
     });
     return res.data;
   } catch (error) {
@@ -146,7 +146,7 @@ export const getProductsByManufacturer = async (manuafacurer) => {
     // make axios post request
     const res = await axios({
       method: "get",
-      url: `localhost/products/?${manuafacurer}`,
+      url: `localhost/products/?manufacturer=${manuafacurer}`,
     });   
     return res.data;
   } catch (error) {
@@ -158,7 +158,7 @@ export const getProductsById = async (id) => {
     // make axios post request
     const res = await axios({
       method: "get",
-      url: `localhost/products?${id}`,
+      url: `localhost/products?id=${id}`,
     });
     return res.data;
   } catch (error) {
@@ -182,7 +182,7 @@ export const getProductAttributes = async (id) => {
     // make axios post request
     const res = await axios({
       method: "get",
-      url: `localhost/attribute/products?${id}`,
+      url: `localhost/attribute/products?id=${id}`,
     });
     return res.data;
   } catch (error) {
@@ -201,3 +201,34 @@ export const getAllCategory = async () => {
     return error.response.data;
   }
 };
+
+export const getReview = async (product_id) => {
+  try {
+    // make axios post request
+    const res = await axios({
+      method: "get",
+      url: `localhost/review/get?id=${product_id}`,
+    });
+    return res.data;
+  } catch (error) {
+    return error.response.data;
+  }
+};
+export const addReview = async (token) => {
+  try {
+    // make axios post request
+    const res = await axios({
+      method: "add",
+      url: `http://localhost/review/post`,
+      data: formValue,
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "content-type": "application/json",
+      },
+    });
+    return res.data;
+  } catch (error) {
+    return error.response.data;
+  }
+};
+

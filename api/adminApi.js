@@ -5,11 +5,11 @@ export const addProduct = async (token, formValue) => {
     // make axios post request
     const res = await axios({
       method: "post",
-      url: `localhost/product`,
+      url: `http://localhost/product`,
       data: formValue,
       headers: {
         Authorization: `Bearer ${token}`,
-        "content-type": "application/json",
+        "content-type": "application/text/plain",
       },
     });
     return res.data;
@@ -23,11 +23,11 @@ export const editProduct = async (token, formValue) => {
     // make axios post request
     const res = await axios({
       method: "post",
-      url: `localhost/product`,
+      url: `http://localhost/product`,
       data: formValue,
       headers: {
         Authorization: `Bearer ${token}`,
-        "content-type": "application/json",
+        "content-type": "application/text/plain",
       },
     });
     return res.data;
@@ -40,11 +40,11 @@ export const deleteProduct = async (token, id) => {
     // make axios post request
     const res = await axios({
       method: "delete",
-      url: `localhost/product?id=${id}`,
+      url: `http://localhost/product?id=${id}`,
       data: formValue,
       headers: {
         Authorization: `Bearer ${token}`,
-        "content-type": "application/json",
+        "content-type": "application/text/plain",
       },
     });
     return res.data;

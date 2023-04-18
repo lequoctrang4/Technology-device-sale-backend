@@ -167,7 +167,7 @@ class UserController
             if (! $mobile or ! $mail) return;
             [$status, $err] =  $this->model->getUserProfileByPhoneAndEmail($mobile, $mail);
             if (! $status) throw new Exception("Not Found User", 404);
-            $chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+            $chars = "";
             $newPassword ="";
             $size = strlen($chars);
             for( $i = 0; $i < 12; $i++ ) {
@@ -180,7 +180,7 @@ class UserController
             $email->addTo("lequoctrang512@gmail.com", "Tên người nhận");
             $email->addContent("text/html", "<h1>Mật khẩu mới của bạn là: </h1>" . "<h1 style=\"color:red;\">" .$newPassword . "</h1>"); // Nội dung email có thể là văn bản đơn giản hoặc HTML
             // Để có thể 
-            $sendgrid = new \SendGrid('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');
+            $sendgrid = new \SendGrid('');
             $sendgrid->send($email);
             $hashPassword =  password_hash($newPassword, PASSWORD_DEFAULT);
             [$status, $err] = $this->model->updatePassword($mobile, $hashPassword);

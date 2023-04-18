@@ -69,6 +69,19 @@ class UserModel
         }
         return [true, json_encode($res)];
     }
+    function getUserProfileByPhoneAndEmail($phone, $email) {
+        $qr = "SELECT * FROM user WHERE mobile = \"$phone\" and email = \"$email\"";
+
+        $res = $this->con->query($qr);
+        $res =  get_array_from_result($res);
+
+        if (!empty($res)) {
+            return [true, json_encode($res)];
+        } else {
+            return [false, json_encode(["Not found user with id"])];
+        }
+        return [true, json_encode($res)];
+    }
     function checkUserExistence($phone)
     {
         $qr = "SELECT * FROM `user` WHERE mobile =\"$phone\"";

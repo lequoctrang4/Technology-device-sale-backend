@@ -5,9 +5,15 @@ namespace Main\Controllers;
 use Sabre\HTTP\Request;
 use Sabre\HTTP\Response;
 use Main\Models\UserModel;
+use Dotenv\Dotenv;
 use Exception;
+use SendGrid\Mail\Mail;
 
 require_once __DIR__ . "/../Utils/SqlUtils.php";
+require __DIR__ . "/../vendor/autoload.php";
+
+$dotenv = Dotenv::createImmutable(__DIR__ . '/../');
+$dotenv->load();
 
 class UserController
 {
@@ -91,9 +97,9 @@ class UserController
         try {
             $data = json_decode($this->request->getBodyAsString());
             $user = json_decode($this->request->getHeader('User-info'));
-            if ($user->id !== $data->id) {
-                throw new Exception("Token mismatch!", 404);
-            }
+            // if ($user->id !== $data->id) {
+            //     throw new Exception("Token mismatch!", 404);
+            // }
             if (isset($data->name) && $data->name == '')
                 throw new Exception("Bạn cần phải nhập đầy đủ họ và tên!", 400);
             if (isset($data->mobile) && !preg_match('/^[0-9]{10}+$/', $data->mobile))
@@ -121,16 +127,17 @@ class UserController
     }
     function changePassword()
     {
-        echo "hlo";
         try {
-            $data = $this->request->getBody();
+            
+            $data = json_decode($this->request->getBodyAsString());
             $user = json_decode($this->request->getHeader('User-info'));
-            $oldPassword = $data["oldPassword"];
-            $newPassword = $data["newPassword"];
-            $confirmPassword = $data["confirmPassword"];
+            $oldPassword = $data->oldPassword;
+            $newPassword = $data->newPassword;
+            $confirmPassword = $data->confirmPassword;
+            $this->response->setBody(json_encode("success"));
             if (strlen($oldPassword) == 0 || strlen($newPassword) == 0 || strlen($confirmPassword) == 0)
                 throw new Exception("Vui lòng nhập đủ tất cả các trường!", 400);
-            if (!$this->model->comparePassword($user['mobile'], $oldPassword))
+            if (!$this->model->comparePassword($user->mobile, $oldPassword))
                 throw new Exception("Mật khẩu cũ không đúng!", 400);
             if (strlen($newPassword) < 10)
                 throw new Exception("Độ dài mật khẩu ít nhất là 10!", 400);
@@ -139,7 +146,7 @@ class UserController
             if ($newPassword != $confirmPassword)
                 throw new Exception("Mật khẩu nhập lại không khớp!", 400);
             $hashPassword =  password_hash($newPassword, PASSWORD_DEFAULT);
-            [$status, $err] = $this->model->updatePassword($user["mobile"], $hashPassword);
+            [$status, $err] = $this->model->updatePassword($user->mobile, $hashPassword);
             if ($status) {
                 $this->response->setStatus(200);
                 $this->response->setBody($err);
@@ -154,9 +161,32 @@ class UserController
     function forgetPassword()
     {
         try {
-            $this->response->setBody(json_encode("Chưa làm!"));
+            $data = json_decode($this->request->getBodyAsString());
+            $mobile = $data->mobile;
+            $mail = $data->email;
+            if (! $mobile or ! $mail) return;
+            [$status, $err] =  $this->model->getUserProfileByPhoneAndEmail($mobile, $mail);
+            if (! $status) throw new Exception("Not Found User", 404);
+            $chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+            $newPassword ="";
+            $size = strlen($chars);
+            for( $i = 0; $i < 12; $i++ ) {
+                $newPassword .= $chars[ rand( 0, $size - 1 ) ];
+            }
+            $email = new \SendGrid\Mail\Mail(); 
+            $from = new \SendGrid\Mail\From("lequoctrang4@gmail.com", "Meow Phone");
+            $email->setFrom($from);
+            $email->setSubject("Reset Password Meow Phone");
+            $email->addTo("lequoctrang512@gmail.com", "Tên người nhận");
+            $email->addContent("text/html", "<h1>Mật khẩu mới của bạn là: </h1>" . "<h1 style=\"color:red;\">" .$newPassword . "</h1>"); // Nội dung email có thể là văn bản đơn giản hoặc HTML
+            // Để có thể 
+            $sendgrid = new \SendGrid('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');
+            $sendgrid->send($email);
+            $hashPassword =  password_hash($newPassword, PASSWORD_DEFAULT);
+            [$status, $err] = $this->model->updatePassword($mobile, $hashPassword);
+            $this->response->setBody(json_encode("success"));
         } catch (Exception $e) {
-            $this->response->setStatus($e->getCode());
+            $this->response->setStatus(400);
             $this->response->setBody(json_encode(array("msg" => $e->getMessage())));
         }
     }

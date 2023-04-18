@@ -11,6 +11,7 @@ return [
             ['GET', '/products', ['Main\Controllers\ProductController', 'getProductsHandler']],
             ['GET', '/product', ['Main\Controllers\ProductController', 'getProductById']],
             ['GET', '/product/attribute', ['Main\Controllers\ProductController', 'getProductAttributes']],
+            ['POST', '/user/forgetPassword', ['Main\Controllers\UserController', 'forgetPassword']],
         ],
         "middlewares" => []
     ],
@@ -22,7 +23,6 @@ return [
             ['POST', '/user/setAvatar', ['Main\Controllers\UserController', 'setAvatar']],
             ['PATCH', '/user/editProfile', ['Main\Controllers\UserController', 'editProfile']],
             ['PATCH', '/user/changePassword', ['Main\Controllers\UserController', 'changePassword']],
-            ['POST', '/user/forgetPassword', ['Main\Controllers\UserController', 'forgetPassword']],
             ['GET', '/users', ['Main\Controllers\UserController', 'getUsers']],
             ['DELETE', '/review/delete', ['Main\Controllers\ReviewController', 'deleteReview']],
             ['PATCH', '/review/edit', ['Main\Controllers\ReviewController', 'editReview']],

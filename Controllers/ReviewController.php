@@ -47,10 +47,11 @@ class ReviewController
     }
     function addReview()
     {
+        $user = json_decode($this->request->getHeader('User-info'));
         $data = [
             'review' => json_decode($this->request->getBodyAsString())
         ];
-        [$status, $err] = $this->model->addReview($data['review']);
+        [$status, $err] = $this->model->addReview($data['review'], $user->id);
         if ($status) {
             $this->response->setStatus(200);
             $this->response->setHeader('Content-type', 'application/json');
@@ -61,6 +62,7 @@ class ReviewController
     }
     function editReview()
     {
+        // $user = json_decode($this->request->getHeader('User-info'));
         $data = [
             'review' => json_decode($this->request->getBodyAsString())
         ];

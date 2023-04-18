@@ -34,7 +34,7 @@ class ReviewModel
             return [false, json_encode(['msg' => 'Error when fetch product'])];
         }
     }
-    function addReview($review)
+    function addReview($review, $userId)
     {
         $qr = "INSERT INTO review(
             productId,
@@ -42,7 +42,7 @@ class ReviewModel
             star,
             content
             )
-            VALUES($review->productId,$review->userId,$review->star,\"$review->content\")";
+            VALUES($review->productId,$userId,$review->star,\"$review->content\")";
         try {
             $res = $this->con->query($qr);
 

@@ -218,7 +218,7 @@ export const addReview = async (token) => {
   try {
     // make axios post request
     const res = await axios({
-      method: "add",
+      method: "post",
       url: `http://localhost/review/post`,
       data: formValue,
       headers: {
@@ -231,4 +231,20 @@ export const addReview = async (token) => {
     return error.response.data;
   }
 };
-
+export const editReview = async (token) => {
+  try {
+    // make axios post request
+    const res = await axios({
+      method: "patch",
+      url: `http://localhost/review/edit`,
+      data: formValue,
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "content-type": "application/json",
+      },
+    });
+    return res.data;
+  } catch (error) {
+    return error.response.data;
+  }
+};

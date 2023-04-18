@@ -17,13 +17,13 @@ return [
     ],
     "user" => [
         "routes" => [
-            ['POST', '/review/post', ['Main\Controllers\ReviewController', 'addReview']],
             ['GET', '/user/profile', ['Main\Controllers\UserController', 'getProfile']],
             ['GET', '/user/getAvatar', ['Main\Controllers\UserController', 'getAvatar']],
             ['POST', '/user/setAvatar', ['Main\Controllers\UserController', 'setAvatar']],
             ['PATCH', '/user/editProfile', ['Main\Controllers\UserController', 'editProfile']],
             ['PATCH', '/user/changePassword', ['Main\Controllers\UserController', 'changePassword']],
             ['GET', '/users', ['Main\Controllers\UserController', 'getUsers']],
+            ['POST', '/review/post', ['Main\Controllers\ReviewController', 'addReview']],
             ['DELETE', '/review/delete', ['Main\Controllers\ReviewController', 'deleteReview']],
             ['PATCH', '/review/edit', ['Main\Controllers\ReviewController', 'editReview']],
 

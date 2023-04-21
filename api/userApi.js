@@ -104,7 +104,7 @@ export const changePassword = async (token, formValue) => {
   try {
     // make axios post request
     const res = await axios({
-      method: "post",
+      method: "patch",
       url: `http://localhost/user/changePassword`,
       data: formValue,
       headers: {
@@ -193,6 +193,7 @@ export const getProductAttributes = async (id) => {
     return error.response.data;
   }
 };
+
 export const getAllCategory = async () => {
   try {
     // make axios post request

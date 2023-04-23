@@ -161,7 +161,7 @@ class ProductModel
     }
     function getProductAttributes($id)
     {
-        $qr = "SELECT * FROM `attribute_value` where `productId` = $id";
+        $qr = "SELECT group_name, name, value FROM `attribute_value` INNER JOIN `attributes` ON attribute_value.id_attribute = attributes.id where `productId` = $id ORDER BY group_name";
         $res = $this->con->query($qr);
         if ($res) {
             $res =  get_array_from_result($res);

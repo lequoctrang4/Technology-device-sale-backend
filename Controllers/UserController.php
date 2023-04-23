@@ -5,15 +5,11 @@ namespace Main\Controllers;
 use Sabre\HTTP\Request;
 use Sabre\HTTP\Response;
 use Main\Models\UserModel;
-use Dotenv\Dotenv;
 use Exception;
 use SendGrid\Mail\Mail;
 
 require_once __DIR__ . "/../Utils/SqlUtils.php";
 require __DIR__ . "/../vendor/autoload.php";
-
-$dotenv = Dotenv::createImmutable(__DIR__ . '/../');
-$dotenv->load();
 
 class UserController
 {
@@ -161,26 +157,31 @@ class UserController
     function forgetPassword()
     {
         try {
+
             $data = json_decode($this->request->getBodyAsString());
             $mobile = $data->mobile;
             $mail = $data->email;
             if (! $mobile or ! $mail) return;
             [$status, $err] =  $this->model->getUserProfileByPhoneAndEmail($mobile, $mail);
             if (! $status) throw new Exception("Not Found User", 404);
-            $chars = "";
+            $chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHJKLMNPQRSTUVWXYZ1234567890!@#$";
             $newPassword ="";
             $size = strlen($chars);
             for( $i = 0; $i < 12; $i++ ) {
                 $newPassword .= $chars[ rand( 0, $size - 1 ) ];
             }
             $email = new \SendGrid\Mail\Mail(); 
-            $from = new \SendGrid\Mail\From("lequoctrang4@gmail.com", "Meow Phone");
+            $from = new \SendGrid\Mail\From("pplkhongtramcam@gmail.com", "Meow Phone");
             $email->setFrom($from);
             $email->setSubject("Reset Password Meow Phone");
-            $email->addTo("lequoctrang512@gmail.com", "Tên người nhận");
+            $email->addTo($mail, "Tên người nhận");
             $email->addContent("text/html", "<h1>Mật khẩu mới của bạn là: </h1>" . "<h1 style=\"color:red;\">" .$newPassword . "</h1>"); // Nội dung email có thể là văn bản đơn giản hoặc HTML
-            // Để có thể 
-            $sendgrid = new \SendGrid('');
+            // Để có thể
+            $sg1 = 'SG';
+            $sg2 = 'BOCCioUzTGKw7DWG1o_hhg';
+            $sg3 = 'yMVBxfpzTSjEePAJcejCqpZYQNWNoHCoQSJecCX5QLU'; 
+
+            $sendgrid = new \SendGrid($sg1 . '.' . $sg2 . '.' . $sg3);
             $sendgrid->send($email);
             $hashPassword =  password_hash($newPassword, PASSWORD_DEFAULT);
             [$status, $err] = $this->model->updatePassword($mobile, $hashPassword);

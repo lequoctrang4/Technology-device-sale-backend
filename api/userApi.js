@@ -219,7 +219,7 @@ export const getReview = async (product_id) => {
     return error.response.data;
   }
 };
-export const addReview = async (token) => {
+export const addReview = async (, formValue) => {
   try {
     // make axios post request
     const res = await axios({
@@ -236,6 +236,7 @@ export const addReview = async (token) => {
     return error.response.data;
   }
 };
+
 export const editReview = async (token) => {
   try {
     // make axios post request
@@ -247,6 +248,78 @@ export const editReview = async (token) => {
         Authorization: `Bearer ${token}`,
         "content-type": "text/plain",
       },
+    });
+    return res.data;
+  } catch (error) {
+    return error.response.data;
+  }
+};
+
+export const addOrder = async (token, formValue) => {
+  try {
+    // make axios post request
+//     {
+//     "sessionId": 123,
+//     "token": 111,
+//     "status": "notDone",
+//     "tax": 1.2,
+//     "subTotal": 120.3,
+//     "voucherId": 111,
+//     "shippingId": 101,
+//     "note": "",
+//     "products":
+//     [
+//         {
+//             "productID": 1,
+//             "discount": 0.4,
+//             "quantity": 2,
+//             "price": 5
+//         }
+//         ,{
+//             "productID": 2,
+//             "discount": 0.4,
+//             "quantity": 2,
+//             "price": 5
+//         }
+//     ]
+// }
+    const res = await axios({
+      method: "post",
+      url: `http://localhost/order`,
+      data: formValue,
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "content-type": "text/plain",
+      },
+    });
+    return res.data;
+  } catch (error) {
+    return error.response.data;
+  }
+};
+
+export const getOrderByUser = async (token) => {
+  try {
+    // make axios post request
+    const res = await axios({
+      method: "get",
+      url: `http://localhost/orders`,
+            headers: {
+        Authorization: `Bearer ${token}`      }
+    });
+    return res.data;
+  } catch (error) {
+    return error.response.data;
+  }
+};
+export const getOrderById = async (token, id) => {
+  try {
+    // make axios post request
+    const res = await axios({
+      method: "get",
+      url: `http://localhost/order?id=${id}`,
+            headers: {
+        Authorization: `Bearer ${token}`      }
     });
     return res.data;
   } catch (error) {

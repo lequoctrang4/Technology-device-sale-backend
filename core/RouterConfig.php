@@ -26,6 +26,9 @@ return [
             ['POST', '/review/post', ['Main\Controllers\ReviewController', 'addReview']],
             ['DELETE', '/review/delete', ['Main\Controllers\ReviewController', 'deleteReview']],
             ['PATCH', '/review/edit', ['Main\Controllers\ReviewController', 'editReview']],
+            ['GET', '/orders', ['Main\Controllers\OrderController', 'getOrdersByUserId']],
+            ['GET', '/order', ['Main\Controllers\OrderController', 'getOrderByOrderId']],
+            ['POST', '/order', ['Main\Controllers\OrderController', 'createOrder']]
 
         ],
         "middlewares" => [

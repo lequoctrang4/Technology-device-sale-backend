@@ -167,6 +167,7 @@ INSERT INTO `category` (`id`, `title`) VALUES ('4', 'Đồng hồ');
 
 INSERT INTO `product` (`id`, `name`, `color`, `salePercent`, `price`, `manufacturer`, `html`, `image`) VALUES
 (1, 'iPhone 13 128GB', 'Hồng', 20, 24990000, 'Apple', '', 'https://cdn2.cellphones.com.vn/x358,webp,q100/media/catalog/product/1/4/14_1_9_2_9.jpg'),
+(2, 'iPhone 13 128GB', 'Đen', 20, 24990000, 'Apple', '', 'https://cdn2.cellphones.com.vn/x358,webp,q100/media/catalog/product/1/2/12_3_8_2_8.jpg'),
 (3, 'iPhone 13 128GB', 'Xanh', 20, 24990000, 'Apple', '', 'https://cdn2.cellphones.com.vn/358x/media/catalog/product/x/n/xnnah_kas_3.png'),
 (4, 'iPhone 13 128GB', 'Trắng', 20, 24990000, 'Apple', '', 'https://cdn2.cellphones.com.vn/358x/media/catalog/product/t/r/tr_ng_5.jpg'),
 (5, 'iPhone 13 128GB', 'Đỏ', 20, 24990000, 'Apple', '', 'https://cdn2.cellphones.com.vn/x358,webp,q100/media/catalog/product/1/3/13_4_7_2_7.jpg'),
@@ -195,6 +196,7 @@ INSERT INTO `product` (`id`, `name`, `color`, `salePercent`, `price`, `manufactu
 (28, 'Samsung Galaxy S23 Ultra 256GB', 'Đen', 20, 41990990, 'Samsung', '', 'https://cdn2.cellphones.com.vn/358x358,webp,q100 /media/catalog/product/s/2/s23-ultra-tim.png'),
 (29, 'Samsung Galaxy A34 5G 8GB 128GB', 'Đen', 10, 8490000, 'Samsung', '', 'https://cdn2.cellphones.com.vn/358x358,webp, q100/media/catalog/product/s/m/sm-a346_galaxy_a34_5g_awesome_silver_front.png'),
 (30, 'Xiaomi Redmi Note 11 128GB', 'Đen', 10, 4990000, 'Xiaomi', 'HFHRY43.html', 'https://cdn2.cellphones.com.vn/358x358, webp,q100/media/catalog/product/8/0/800x800-640x640-5.png');
+
 INSERT INTO `product_category` (`productID`, `categoryID`) VALUES 
 (1, 1),
 (2, 1),

@@ -186,7 +186,7 @@ export const getProductAttributes = async (id) => {
     // make axios post request
     const res = await axios({
       method: "get",
-      url: `http://localhost/attribute/products?id=${id}`,
+      url: `http://localhost/product/attribute?id=${id}`,
     });
     return res.data;
   } catch (error) {

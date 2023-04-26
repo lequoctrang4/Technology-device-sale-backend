@@ -61,7 +61,7 @@ export const editProfile = async (token, formValue) => {
       data: formValue,
       headers: {
         Authorization: `Bearer ${token}`,
-        "content-type": "text/plain",
+        "content-type": "application/json",
       },
     });
     return res.data;

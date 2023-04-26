@@ -91,6 +91,7 @@ class UserController
     function editProfile()
     {
         try {
+            $this->response->setStatus(200);
             $data = json_decode($this->request->getBodyAsString());
             $user = json_decode($this->request->getHeader('User-info'));
             // if ($user->id !== $data->id) {

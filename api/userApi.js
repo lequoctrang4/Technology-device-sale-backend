@@ -219,7 +219,7 @@ export const getReview = async (product_id) => {
     return error.response.data;
   }
 };
-export const addReview = async (, formValue) => {
+export const addReview = async (token, formValue) => {
   try {
     // make axios post request
     const res = await axios({
@@ -237,7 +237,7 @@ export const addReview = async (, formValue) => {
   }
 };
 
-export const editReview = async (token) => {
+export const editReview = async (token, formValue) => {
   try {
     // make axios post request
     const res = await axios({

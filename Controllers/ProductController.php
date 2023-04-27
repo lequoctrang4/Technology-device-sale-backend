@@ -89,6 +89,7 @@ class ProductController
         $data = [
             'product' => json_decode($this->request->getBodyAsString())
         ];
+        
         [$status, $err] = $this->model->createProduct($data['product']);
         if ($status) {
             $this->response->setStatus(200);

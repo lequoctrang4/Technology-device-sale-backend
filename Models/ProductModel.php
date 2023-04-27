@@ -73,7 +73,7 @@ class ProductModel
     }
     function createProduct($params)
     {
-        $qr = "insert into product (name, color, salePercent, price, manufacturer, html) values (\"$params->name\", \"$params->color\", \"$params->salePercent\", \"$params->price\", \"$params->manufacturer\", \"$params->html\");";
+        $qr = "insert into product (name, color, salePercent, price, manufacturer, html, image) values (\"$params->name\", \"$params->color\", \"$params->salePercent\", \"$params->price\", \"$params->manufacturer\", \"$params->html\", \"$params->image\");";
         $res = $this->con->query($qr);
         $last_id = $this->con->query("SELECT id FROM product ORDER BY id DESC LIMIT 1;");
         $last_id = get_array_from_result($last_id)[0]["id"];
